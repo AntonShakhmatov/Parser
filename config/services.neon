@@ -1,0 +1,6 @@
+services:
+    - App\Model\PostModel
+    - App\Model\SteamModel
+    - App\Model\EpicModel
+    - App\Cookies\Cookies
+    - App\Router\RouterFactory::createRouter

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/browse.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/buttons.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/motiva_sans.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/search.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/shared_global.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/shared_responsive.css">
+		<link rel="stylesheet" type="text/css" href="{$basePath}/css/steam/store.css">
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{*		<script type="text/javascript" src="{$basePath}/js/steam/jquery-1.8.3.min.js"></script>*}
+		<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/dselect.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/dynamicstore.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/jquery.filter.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/main.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/prototype-1.7.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/searchpage.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/shared_global.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/shared_responsive_adapter.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/steam/tooltip.js"></script>
+
+	<script>
+
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('GET', 'localhost:8000/parser/search/results/?query&start=50&count=50&dynamic_data=&sort_by=_ASC&snr=1_7_7_2300_7&specials=1&infinite=1', false);
+
+		xhr.send();
+
+		if(xhr.status != 200)
+		{
+			alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+		} else {
+			// вывести результат
+			console.log( xhr.responseText ); // responseText -- текст ответа.
+		}
+
+	</script>
+
+	<title>{ifset title}{include title|stripHtml} | {/ifset}Nette Web</title>
+</head>
+
+<link>
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+
+	{include content}
+
+</body>
+</html>

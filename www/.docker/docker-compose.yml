@@ -1,0 +1,72 @@
+# Версия docker-compose
+version: '3.8'
+# Список наших серверов (контейнеров)
+services:
+  php:
+    container_name: fraime
+    image: fraimework
+    build:
+      context: .
+      dockerfile: ./images/php/Dockerfile
+    volumes:
+      - ../../:/var/www/podudali.tech
+      # - ./fullchain.pem /etc/ssl/certs/
+      # - ./privkey.pem /etc/ssl/private/
+      # - ./podudali.tech.conf /etc/apache2/sites-available/
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - NETTE_DEBUG=1
+    links:
+      - db
+
+  db:
+    container_name: fraime_db
+    image: fraime_db
+    build:
+      context: .
+      dockerfile: ./images/mysql/Dockerfile
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: test
+    volumes:
+      - ./images/mysql/nette_testing.sql:/docker-entrypoint-initdb.d/nette_testing.sql
+
+#    volumes:
+#      - ./mysql/:/var/lib/mysql/
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8081:80
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=test
+      - PMA_PASSWORD=test
+
+  chrome:
+    container_name: fraime_chrome
+    image: selenium/standalone-chrome:latest
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+
+  selenium-hub:
+    container_name: selenium-hub
+    image: selenium/hub:latest
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4445:4445"

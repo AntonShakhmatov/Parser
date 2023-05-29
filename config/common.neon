@@ -1,0 +1,21 @@
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+		steam: App\Modules\Parser\Presenter\*Presenter
+		epic: App\Modules\Parser\Presenter\*Presenter
+		cleaner: App\Modules\CleanCookies\Presenter\*Presenter
+		telegram: App\Modules\TelegramBot\Presenter\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+di:
+	export:
+		parameters: no
+		tags: no
